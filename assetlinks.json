@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.spcjenn.waypoint",
+    "sha256_cert_fingerprints": ["A6:99:04:06:F3:B6:FF:91:04:2D:4A:EB:8E:A4:3F:68:1B:6F:BD:81:3C:B0:41:BE:01:4C:4B:1B:F2:99:0E:5E"]
+  }
+}]
