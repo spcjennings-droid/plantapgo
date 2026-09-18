@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WayPoint — Plan. Tap. Go. — v2.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: -apple-system, sans-serif; background: #2D3142; color: white; text-align: center; padding: 60px 20px; }
+        h1 { color: #F4B942; font-size: 28px; }
+        p { color: #ccc; font-size: 16px; }
+        .btn { display: inline-block; margin: 10px; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 16px; }
+        .ios { background: #F4B942; color: #2D3142; }
+        .android { background: #27AE60; color: white; }
+    </style>
+    <script>
+        (function() {
+            var url = window.location.href;
+            var path = window.location.pathname;
+            var search = window.location.search;
+
+            // Build waypoint:// deep link from plantapgo.com URL
+            // https://plantapgo.com/route?... → waypoint://route?...
+            // https://plantapgo.com/place?... → waypoint://place?...
+            var deepLink = "waypoint:/" + path + search;
+
+            // Try to open WayPoint directly
+            window.location = deepLink;
+
+            // After 2 seconds if WayPoint didn't open, show download buttons
+            setTimeout(function() {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('download').style.display = 'block';
+            }, 2000);
+        })();
+    </script>
+</head>
+<body>
+    <h1>WayPoint</h1>
+    <p>Plan. Tap. Go. — v2.0</p>
+
+    <div id="loading">
+        <p>Opening WayPoint...</p>
+    </div>
+
+    <div id="download" style="display:none">
+        <p>Don't have WayPoint? Download it free:</p>
+        <a class="btn ios" href="https://apps.apple.com/app/id000000000">📱 App Store</a>
+        <a class="btn android" href="https://play.google.com/store/apps/details?id=com.spcjenn.waypoint">🤖 Google Play</a>
+        <p style="margin-top:30px;color:#888;font-size:12px;">by SpcJenn LLC — Veteran Owned 🇺🇸</p>
+    </div>
+</body>
+</html>
