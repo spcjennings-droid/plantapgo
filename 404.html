@@ -17,8 +17,17 @@
         .ios { background: #F4B942; color: #2D3142; }
         .android { background: #27AE60; color: white; }
         .footer { margin-top: 40px; color: #555; font-size: 12px; }
-        .hidden { display: none; }
     </style>
+    <script>
+        window.onload = function() {
+            var deepLink = 'waypoint:/' + window.location.pathname + window.location.search;
+            window.location.href = deepLink;
+            setTimeout(function() {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('download').style.display = 'block';
+            }, 2000);
+        };
+    </script>
 </head>
 <body>
     <h1>WayPoint</h1>
@@ -29,46 +38,15 @@
         <p>Opening WayPoint...</p>
     </div>
 
-    <div id="download" class="hidden">
+    <div id="download" style="display:none">
         <div class="card">
             <p>WayPoint isn't installed or couldn't open automatically.</p>
         </div>
-        <p id="download-msg" style="color:#aaa; font-size:14px; margin-bottom:12px;"></p>
-        <a id="ios-btn" class="btn ios hidden" href="https://apps.apple.com/app/id000000000">📱 Download on App Store</a>
-        <a id="android-btn" class="btn android hidden" href="https://play.google.com/store/apps/details?id=com.spcjenn.waypoint">🤖 Get it on Google Play</a>
+        <p style="color:#aaa; font-size:14px; margin-bottom:12px;">Get WayPoint — available on iOS and Android:</p>
+        <a class="btn ios" href="https://apps.apple.com/app/id000000000">📱 Download on App Store</a>
+        <a class="btn android" href="https://play.google.com/store/apps/details?id=com.spcjenn.waypoint">🤖 Get it on Google Play</a>
     </div>
 
     <div class="footer">by SpcJenn LLC — Veteran Owned 🇺🇸</div>
-
-    <script>
-        // Detect device
-        var ua = navigator.userAgent;
-        var isAndroid = /android/i.test(ua);
-        var isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
-
-        // Build deep link preserving full URL including all query params
-        var deepLink = 'waypoint:/' + window.location.pathname + window.location.search;
-
-        // Redirect to WayPoint
-        window.location.href = deepLink;
-
-        // After 2 seconds show download buttons
-        setTimeout(function() {
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('download').classList.remove('hidden');
-
-            if (isAndroid) {
-                document.getElementById('download-msg').textContent = 'Get WayPoint on Google Play:';
-                document.getElementById('android-btn').classList.remove('hidden');
-            } else if (isIOS) {
-                document.getElementById('download-msg').textContent = 'Get WayPoint on the App Store:';
-                document.getElementById('ios-btn').classList.remove('hidden');
-            } else {
-                document.getElementById('download-msg').textContent = 'Get WayPoint — available on iOS and Android:';
-                document.getElementById('ios-btn').classList.remove('hidden');
-                document.getElementById('android-btn').classList.remove('hidden');
-            }
-        }, 2000);
-    </script>
 </body>
 </html>
