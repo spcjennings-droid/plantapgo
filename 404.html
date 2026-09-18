@@ -25,10 +25,12 @@
 
             var deepLink = 'waypoint:/' + window.location.pathname + window.location.search;
 
-            // Try to open WayPoint
-            window.location.href = deepLink;
+            // Small delay before redirect so URL params are fully available
+            setTimeout(function() {
+                window.location.href = deepLink;
+            }, 300);
 
-            // Only show page after 2 seconds if WayPoint didn't open
+            // Only show page after 2.5 seconds if WayPoint didn't open
             setTimeout(function() {
                 document.body.classList.add('visible');
                 document.getElementById('download').style.display = 'block';
@@ -44,7 +46,7 @@
                     document.getElementById('android-btn').style.display = 'block';
                     document.getElementById('msg').textContent = 'Get WayPoint — available on iOS and Android:';
                 }
-            }, 2000);
+            }, 2500);
         };
     </script>
 </head>
