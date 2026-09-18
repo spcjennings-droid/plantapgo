@@ -20,11 +20,31 @@
     </style>
     <script>
         window.onload = function() {
+            // Detect device using toLowerCase for reliability
+            var ua = navigator.userAgent.toLowerCase();
+            var isAndroid = ua.indexOf('android') > -1;
+            var isIOS = (ua.indexOf('iphone') > -1 || ua.indexOf('ipad') > -1 || ua.indexOf('ipod') > -1);
+
+            // Redirect to WayPoint deep link
             var deepLink = 'waypoint:/' + window.location.pathname + window.location.search;
             window.location.href = deepLink;
+
+            // After 2 seconds — WayPoint not installed, show correct store button
             setTimeout(function() {
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('download').style.display = 'block';
+
+                if (isIOS) {
+                    document.getElementById('ios-btn').style.display = 'block';
+                    document.getElementById('msg').textContent = 'Get WayPoint on the App Store:';
+                } else if (isAndroid) {
+                    document.getElementById('android-btn').style.display = 'block';
+                    document.getElementById('msg').textContent = 'Get WayPoint on Google Play:';
+                } else {
+                    document.getElementById('ios-btn').style.display = 'block';
+                    document.getElementById('android-btn').style.display = 'block';
+                    document.getElementById('msg').textContent = 'Get WayPoint — available on iOS and Android:';
+                }
             }, 2000);
         };
     </script>
@@ -42,9 +62,9 @@
         <div class="card">
             <p>WayPoint isn't installed or couldn't open automatically.</p>
         </div>
-        <p style="color:#aaa; font-size:14px; margin-bottom:12px;">Get WayPoint — available on iOS and Android:</p>
-        <a class="btn ios" href="https://apps.apple.com/app/id000000000">📱 Download on App Store</a>
-        <a class="btn android" href="https://play.google.com/store/apps/details?id=com.spcjenn.waypoint">🤖 Get it on Google Play</a>
+        <p id="msg" style="color:#aaa; font-size:14px; margin-bottom:12px;"></p>
+        <a id="ios-btn" class="btn ios" href="https://apps.apple.com/app/id000000000" style="display:none">📱 Download on App Store</a>
+        <a id="android-btn" class="btn android" href="https://play.google.com/store/apps/details?id=com.spcjenn.waypoint" style="display:none">🤖 Get it on Google Play</a>
     </div>
 
     <div class="footer">by SpcJenn LLC — Veteran Owned 🇺🇸</div>
