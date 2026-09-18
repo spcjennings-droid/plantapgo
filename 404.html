@@ -7,7 +7,6 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #2D3142; color: white; text-align: center; padding: 60px 20px; min-height: 100vh; }
-        .logo { font-size: 48px; margin-bottom: 8px; }
         h1 { color: #F4B942; font-size: 32px; font-weight: bold; margin-bottom: 8px; }
         .tagline { color: #aaa; font-size: 16px; margin-bottom: 40px; }
         .card { background: rgba(255,255,255,0.08); border-radius: 16px; padding: 24px; margin: 0 auto 24px; max-width: 360px; }
@@ -17,70 +16,59 @@
         .btn { display: block; margin: 10px auto; padding: 16px 28px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 16px; max-width: 280px; }
         .ios { background: #F4B942; color: #2D3142; }
         .android { background: #27AE60; color: white; }
-        .both { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
         .footer { margin-top: 40px; color: #555; font-size: 12px; }
-        #loading { display: block; }
-        #download { display: none; }
+        .hidden { display: none; }
     </style>
-    <script>
-        (function() {
-            var ua = navigator.userAgent;
-            var isAndroid = /android/i.test(ua);
-            var isIOS = /iPad|iPhone|iPod/.test(ua);
-            var path = window.location.pathname;
-            var search = window.location.search;
-
-            // Build waypoint:// deep link
-            var deepLink = 'waypoint:/' + path + search;
-
-            // Try to open WayPoint
-            window.location = deepLink;
-
-            // After 2 seconds show download buttons
-            setTimeout(function() {
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('download').style.display = 'block';
-
-                // Show only relevant store button
-                if (isAndroid) {
-                    document.getElementById('android-btn').style.display = 'block';
-                    document.getElementById('ios-btn').style.display = 'none';
-                    document.getElementById('download-msg').textContent = "Get WayPoint on Google Play:";
-                } else if (isIOS) {
-                    document.getElementById('ios-btn').style.display = 'block';
-                    document.getElementById('android-btn').style.display = 'none';
-                    document.getElementById('download-msg').textContent = "Get WayPoint on the App Store:";
-                } else {
-                    // Desktop — show both
-                    document.getElementById('ios-btn').style.display = 'block';
-                    document.getElementById('android-btn').style.display = 'block';
-                    document.getElementById('download-msg').textContent = "Get WayPoint — available on iOS and Android:";
-                }
-            }, 2000);
-        })();
-    </script>
 </head>
 <body>
-    <div class="logo">🗺️</div>
     <h1>WayPoint</h1>
-    <p class="tagline">Plan. Tap. Go. — v2.0</p>
+    <p class="tagline">Plan. Tap. Go.</p>
 
     <div id="loading" class="card">
         <div class="spinner"></div>
         <p>Opening WayPoint...</p>
     </div>
 
-    <div id="download">
+    <div id="download" class="hidden">
         <div class="card">
-            <p>WayPoint isn't installed or the link couldn't open automatically.</p>
+            <p>WayPoint isn't installed or couldn't open automatically.</p>
         </div>
         <p id="download-msg" style="color:#aaa; font-size:14px; margin-bottom:12px;"></p>
-        <a id="ios-btn" class="btn ios" href="https://apps.apple.com/app/id000000000">📱 Download on App Store</a>
-        <a id="android-btn" class="btn android" href="https://play.google.com/store/apps/details?id=com.spcjenn.waypoint">🤖 Get it on Google Play</a>
+        <a id="ios-btn" class="btn ios hidden" href="https://apps.apple.com/app/id000000000">📱 Download on App Store</a>
+        <a id="android-btn" class="btn android hidden" href="https://play.google.com/store/apps/details?id=com.spcjenn.waypoint">🤖 Get it on Google Play</a>
     </div>
 
-    <div class="footer">
-        by SpcJenn LLC — Veteran Owned 🇺🇸
-    </div>
+    <div class="footer">by SpcJenn LLC — Veteran Owned 🇺🇸</div>
+
+    <script>
+        // Detect device
+        var ua = navigator.userAgent;
+        var isAndroid = /android/i.test(ua);
+        var isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+
+        // Build deep link preserving full URL including all query params
+        var deepLink = 'waypoint:/' + window.location.pathname + window.location.search;
+
+        // Redirect to WayPoint
+        window.location.href = deepLink;
+
+        // After 2 seconds show download buttons
+        setTimeout(function() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('download').classList.remove('hidden');
+
+            if (isAndroid) {
+                document.getElementById('download-msg').textContent = 'Get WayPoint on Google Play:';
+                document.getElementById('android-btn').classList.remove('hidden');
+            } else if (isIOS) {
+                document.getElementById('download-msg').textContent = 'Get WayPoint on the App Store:';
+                document.getElementById('ios-btn').classList.remove('hidden');
+            } else {
+                document.getElementById('download-msg').textContent = 'Get WayPoint — available on iOS and Android:';
+                document.getElementById('ios-btn').classList.remove('hidden');
+                document.getElementById('android-btn').classList.remove('hidden');
+            }
+        }, 2000);
+    </script>
 </body>
 </html>
