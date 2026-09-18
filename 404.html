@@ -2,17 +2,16 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>WayPoint — Plan. Tap. Go.</title>
+    <title>WayPoint</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #2D3142; color: white; text-align: center; padding: 60px 20px; min-height: 100vh; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #2D3142; color: white; text-align: center; padding: 60px 20px; min-height: 100vh; opacity: 0; transition: opacity 0.3s; }
+        body.visible { opacity: 1; }
         h1 { color: #F4B942; font-size: 32px; font-weight: bold; margin-bottom: 8px; }
         .tagline { color: #aaa; font-size: 16px; margin-bottom: 40px; }
         .card { background: rgba(255,255,255,0.08); border-radius: 16px; padding: 24px; margin: 0 auto 24px; max-width: 360px; }
         .card p { color: #ccc; font-size: 15px; line-height: 1.5; }
-        .spinner { width: 32px; height: 32px; border: 3px solid rgba(244,185,66,0.3); border-top-color: #F4B942; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
         .btn { display: block; margin: 10px auto; padding: 16px 28px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 16px; max-width: 280px; }
         .ios { background: #F4B942; color: #2D3142; }
         .android { background: #27AE60; color: white; }
@@ -20,18 +19,18 @@
     </style>
     <script>
         window.onload = function() {
-            // Detect device using toLowerCase for reliability
             var ua = navigator.userAgent.toLowerCase();
             var isAndroid = ua.indexOf('android') > -1;
-            var isIOS = (ua.indexOf('iphone') > -1 || ua.indexOf('ipad') > -1 || ua.indexOf('ipod') > -1);
+            var isIOS = ua.indexOf('iphone') > -1 || ua.indexOf('ipad') > -1 || ua.indexOf('ipod') > -1;
 
-            // Redirect to WayPoint deep link
             var deepLink = 'waypoint:/' + window.location.pathname + window.location.search;
+
+            // Try to open WayPoint
             window.location.href = deepLink;
 
-            // After 2 seconds — WayPoint not installed, show correct store button
+            // Only show page after 2 seconds if WayPoint didn't open
             setTimeout(function() {
-                document.getElementById('loading').style.display = 'none';
+                document.body.classList.add('visible');
                 document.getElementById('download').style.display = 'block';
 
                 if (isIOS) {
@@ -53,14 +52,9 @@
     <h1>WayPoint</h1>
     <p class="tagline">Plan. Tap. Go.</p>
 
-    <div id="loading" class="card">
-        <div class="spinner"></div>
-        <p>Opening WayPoint...</p>
-    </div>
-
     <div id="download" style="display:none">
         <div class="card">
-            <p>WayPoint isn't installed or couldn't open automatically.</p>
+            <p>WayPoint isn't installed. Download it free:</p>
         </div>
         <p id="msg" style="color:#aaa; font-size:14px; margin-bottom:12px;"></p>
         <a id="ios-btn" class="btn ios" href="https://apps.apple.com/app/id000000000" style="display:none">📱 Download on App Store</a>
