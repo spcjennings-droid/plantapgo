@@ -3,6 +3,9 @@
   "target": {
     "namespace": "android_app",
     "package_name": "com.spcjenn.waypoint",
-    "sha256_cert_fingerprints": ["A6:99:04:06:F3:B6:FF:91:04:2D:4A:EB:8E:A4:3F:68:1B:6F:BD:81:3C:B0:41:BE:01:4C:4B:1B:F2:99:0E:5E"]
+    "sha256_cert_fingerprints": [
+      "F9:62:37:47:B9:9B:BE:F9:05:F8:19:EA:82:28:A7:9D:CF:BA:BC:BA:23:13:C0:01:B6:A3:62:33:7F:9E:FB:96",
+      "A6:99:04:06:F3:B6:FF:91:04:2D:4A:EB:8E:A4:3F:68:1B:6F:BD:81:3C:B0:41:BE:01:4C:4B:1B:F2:99:0E:5E"
+    ]
   }
 }]
