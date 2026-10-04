@@ -1,10 +1,12 @@
 {
   "applinks": {
-    "apps": [],
     "details": [
       {
-        "appID": "N8G4KTT7FA.com.spcjenn.WayPoint",
-        "paths": ["/route*", "/place*"]
+        "appIDs": ["J9H3QPBFTH.com.spcjenn.WayPoint"],
+        "components": [
+          { "/": "/route*" },
+          { "/": "/place*" }
+        ]
       }
     ]
   }
