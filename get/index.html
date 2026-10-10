@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Get WayPoint — Plan. Tap. Go.</title>
+    <meta name="description" content="Download WayPoint free on iPhone and Android.">
+    <meta property="og:title" content="Get WayPoint — Plan. Tap. Go.">
+    <meta property="og:description" content="Multi-stop trip planning made simple. Free on iPhone and Android.">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #2D3142; color: white; text-align: center; padding: 60px 20px; min-height: 100vh; }
+        h1 { color: #F4B942; font-size: 32px; font-weight: bold; margin-bottom: 8px; }
+        .tagline { color: #aaa; font-size: 16px; margin-bottom: 40px; }
+        .msg { color: #aaa; font-size: 14px; margin-bottom: 12px; }
+        .btn { display: block; margin: 10px auto; padding: 16px 28px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 16px; max-width: 280px; }
+        .ios { background: #F4B942; color: #2D3142; }
+        .android { background: #27AE60; color: white; }
+        .soon { display: block; margin: 10px auto; padding: 16px 28px; border-radius: 12px; max-width: 280px; color: #aaa; border: 2px dashed #555; font-size: 15px; }
+        .footer { margin-top: 40px; color: #777; font-size: 12px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <h1>WayPoint</h1>
+    <p class="tagline">Plan. Tap. Go.</p>
+
+    <p id="msg" class="msg">Get WayPoint — free on iPhone and Android:</p>
+    <a id="ios-btn" class="btn ios" href="#">Download on the App Store</a>
+    <span id="ios-soon" class="soon hidden">Coming soon to the App Store</span>
+    <a id="android-btn" class="btn android" href="#">Get it on Google Play</a>
+
+    <div class="footer">by SpcJenn LLC — Veteran Owned</div>
+
+    <script>
+        // ── LAUNCH CHECKLIST: paste WayPoint's App Store ID here once it's approved ──
+        var APP_STORE_ID = '';
+
+        // Campaign tag from the QR code / ad link, e.g. plantapgo.com/get/?src=yt-travel
+        var params = new URLSearchParams(window.location.search);
+        var src = (params.get('src') || 'website').replace(/[^a-zA-Z0-9_-]/g, '');
+
+        // Google Play: campaign shows up in Play Console → Statistics / acquisition reports
+        var playUrl = 'https://play.google.com/store/apps/details?id=com.spcjenn.waypoint' +
+                      '&referrer=' + encodeURIComponent('utm_source=' + src + '&utm_medium=qr');
+        // App Store: campaign name (ct). Add your provider token as &pt=XXXX once you have it
+        // from App Store Connect → Analytics → Campaigns, so installs are counted per campaign.
+        var appStoreUrl = APP_STORE_ID
+            ? 'https://apps.apple.com/app/id' + APP_STORE_ID + '?ct=' + encodeURIComponent(src)
+            : '';
+
+        document.getElementById('android-btn').href = playUrl;
+        if (appStoreUrl) {
+            document.getElementById('ios-btn').href = appStoreUrl;
+        } else {
+            document.getElementById('ios-btn').classList.add('hidden');
+            document.getElementById('ios-soon').classList.remove('hidden');
+        }
+
+        var ua = navigator.userAgent.toLowerCase();
+        var isAndroid = ua.indexOf('android') > -1;
+        var isIOS = /iphone|ipad|ipod/.test(ua) ||
+                    (ua.indexOf('macintosh') > -1 && navigator.maxTouchPoints > 1);
+
+        // Phones go straight to their store; computers see both buttons
+        if (isAndroid) {
+            window.location.replace(playUrl);
+        } else if (isIOS && appStoreUrl) {
+            window.location.replace(appStoreUrl);
+        } else if (isIOS) {
+            document.getElementById('android-btn').classList.add('hidden');
+            document.getElementById('msg').textContent = 'WayPoint for iPhone is almost here:';
+        }
+    </script>
+</body>
+</html>

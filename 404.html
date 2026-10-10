@@ -1,68 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WayPoint</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WayPoint — Plan. Tap. Go.</title>
+    <meta name="description" content="WayPoint: multi-stop trip planning made simple. Free on iPhone and Android.">
+    <meta property="og:title" content="WayPoint — Plan. Tap. Go.">
+    <meta property="og:description" content="Multi-stop trip planning made simple. Free on iPhone and Android.">
+    <meta property="og:site_name" content="WayPoint">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #2D3142; color: white; text-align: center; padding: 60px 20px; min-height: 100vh; opacity: 0; transition: opacity 0.3s; }
-        body.visible { opacity: 1; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #2D3142; color: white; text-align: center; padding: 60px 20px; min-height: 100vh; }
         h1 { color: #F4B942; font-size: 32px; font-weight: bold; margin-bottom: 8px; }
         .tagline { color: #aaa; font-size: 16px; margin-bottom: 40px; }
         .card { background: rgba(255,255,255,0.08); border-radius: 16px; padding: 24px; margin: 0 auto 24px; max-width: 360px; }
         .card p { color: #ccc; font-size: 15px; line-height: 1.5; }
+        .card p + p { margin-top: 10px; }
+        .hint { color: #F4B942 !important; font-size: 14px !important; }
         .btn { display: block; margin: 10px auto; padding: 16px 28px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 16px; max-width: 280px; }
         .ios { background: #F4B942; color: #2D3142; }
         .android { background: #27AE60; color: white; }
-        .footer { margin-top: 40px; color: #555; font-size: 12px; }
+        .open { background: transparent; color: #F4B942; border: 2px solid #F4B942; }
+        .soon { display: block; margin: 10px auto; padding: 16px 28px; border-radius: 12px; max-width: 280px; color: #aaa; border: 2px dashed #555; font-size: 15px; }
+        .msg { color: #aaa; font-size: 14px; margin-bottom: 12px; }
+        .small { color: #888; font-size: 13px; margin-top: 18px; }
+        .footer { margin-top: 40px; color: #777; font-size: 12px; }
+        .hidden { display: none; }
     </style>
-    <script>
-        window.onload = function() {
-            var ua = navigator.userAgent.toLowerCase();
-            var isAndroid = ua.indexOf('android') > -1;
-            var isIOS = ua.indexOf('iphone') > -1 || ua.indexOf('ipad') > -1 || ua.indexOf('ipod') > -1;
-
-            var deepLink = 'waypoint:/' + window.location.pathname + window.location.search;
-
-            // Small delay before redirect so URL params are fully available
-            setTimeout(function() {
-                window.location.href = deepLink;
-            }, 300);
-
-            // Only show page after 2.5 seconds if WayPoint didn't open
-            setTimeout(function() {
-                document.body.classList.add('visible');
-                document.getElementById('download').style.display = 'block';
-
-                if (isIOS) {
-                    document.getElementById('ios-btn').style.display = 'block';
-                    document.getElementById('msg').textContent = 'Get WayPoint on the App Store:';
-                } else if (isAndroid) {
-                    document.getElementById('android-btn').style.display = 'block';
-                    document.getElementById('msg').textContent = 'Get WayPoint on Google Play:';
-                } else {
-                    document.getElementById('ios-btn').style.display = 'block';
-                    document.getElementById('android-btn').style.display = 'block';
-                    document.getElementById('msg').textContent = 'Get WayPoint — available on iOS and Android:';
-                }
-            }, 2500);
-        };
-    </script>
 </head>
 <body>
     <h1>WayPoint</h1>
     <p class="tagline">Plan. Tap. Go.</p>
 
-    <div id="download" style="display:none">
-        <div class="card">
-            <p>WayPoint isn't installed. Download it free:</p>
-        </div>
-        <p id="msg" style="color:#aaa; font-size:14px; margin-bottom:12px;"></p>
-        <a id="ios-btn" class="btn ios" href="https://apps.apple.com/app/id000000000" style="display:none">📱 Download on App Store</a>
-        <a id="android-btn" class="btn android" href="https://play.google.com/store/apps/details?id=com.spcjenn.waypoint" style="display:none">🤖 Get it on Google Play</a>
+    <div class="card">
+        <p id="card-text">Multi-stop trip planning made simple. Download WayPoint free:</p>
+        <p id="card-hint" class="hint hidden">After installing, come back and tap the link again to load it.</p>
     </div>
 
-    <div class="footer">by SpcJenn LLC — Veteran Owned 🇺🇸</div>
+    <p id="msg" class="msg">Get WayPoint — available on iOS and Android:</p>
+    <a id="ios-btn" class="btn ios" href="#">Download on the App Store</a>
+    <span id="ios-soon" class="soon hidden">Coming soon to the App Store</span>
+    <a id="android-btn" class="btn android" href="https://play.google.com/store/apps/details?id=com.spcjenn.waypoint">Get it on Google Play</a>
+
+    <div id="open-wrap" class="hidden">
+        <p class="small">Already have WayPoint?</p>
+        <a id="open-btn" class="btn open" href="#">Open in WayPoint</a>
+    </div>
+
+    <div class="footer">by SpcJenn LLC — Veteran Owned</div>
+
+    <script>
+        // ── LAUNCH CHECKLIST: paste WayPoint's App Store ID here once it's approved ──
+        // Example: https://apps.apple.com/app/id1234567890  →  APP_STORE_ID = '1234567890'
+        var APP_STORE_ID = '';
+
+        var ua = navigator.userAgent.toLowerCase();
+        var isAndroid = ua.indexOf('android') > -1;
+        var isIOS = /iphone|ipad|ipod/.test(ua) ||
+                    (ua.indexOf('macintosh') > -1 && navigator.maxTouchPoints > 1); // iPadOS
+        var path = window.location.pathname.toLowerCase();
+        var isRoute = path.indexOf('/route') === 0;
+        var isPlace = path.indexOf('/place') === 0;
+
+        function show(id) { document.getElementById(id).classList.remove('hidden'); }
+        function hide(id) { document.getElementById(id).classList.add('hidden'); }
+
+        // App Store button: real link once the ID is set, otherwise "Coming soon"
+        if (APP_STORE_ID) {
+            document.getElementById('ios-btn').href = 'https://apps.apple.com/app/id' + APP_STORE_ID;
+        } else {
+            hide('ios-btn');
+            show('ios-soon');
+        }
+
+        // Shared route / place links: explain what happened, offer to open the app
+        if (isRoute || isPlace) {
+            document.getElementById('card-text').textContent = isRoute
+                ? 'Someone shared a route with you in WayPoint. Download WayPoint free to open it:'
+                : 'Someone shared a place with you in WayPoint. Download WayPoint free to open it:';
+            show('card-hint');
+
+            // Only offered as a button (never automatic), so people without the app
+            // don't get Safari's "address is invalid" error.
+            if (isIOS || isAndroid) {
+                document.getElementById('open-btn').href =
+                    'waypoint:/' + window.location.pathname + window.location.search;
+                show('open-wrap');
+            }
+        }
+
+        // Show only the right store on a phone; both on a computer
+        var msg = document.getElementById('msg');
+        if (isIOS) {
+            hide('android-btn');
+            msg.textContent = 'Get WayPoint for iPhone:';
+        } else if (isAndroid) {
+            hide('ios-btn');
+            hide('ios-soon');
+            msg.textContent = 'Get WayPoint for Android:';
+        }
+    </script>
 </body>
 </html>
