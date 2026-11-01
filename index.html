@@ -64,7 +64,7 @@
         .hidden { display: none !important; }
 
         /* Sections */
-        section { padding: 56px 0; }
+        section { padding: 56px 0; scroll-margin-top: 64px; }
         section.alt { background: var(--navy-2); }
         h2 { font-size: 30px; color: #fff; margin-bottom: 10px; }
         .sub { color: var(--muted); margin-bottom: 32px; max-width: 640px; }
@@ -83,6 +83,8 @@
         .tiers .card li { color: var(--muted); font-size: 15px; padding: 4px 0 4px 22px; position: relative; }
         .tiers .card li::before { content: "✓"; color: var(--amber); position: absolute; left: 0; }
         .pro { border: 2px solid var(--amber); }
+        .video { position: relative; width: 100%; max-width: 860px; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.45); background: #151824; }
+        .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
         .about { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 32px; align-items: start; }
         .about p { color: var(--muted); margin-bottom: 14px; }
         .contact-card p { color: var(--text); margin-bottom: 8px; font-size: 15px; }
@@ -109,6 +111,7 @@
             <ul>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#how">How it works</a></li>
+                <li><a href="#tutorial">Tutorial</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -172,7 +175,17 @@
             </div>
         </section>
 
-        <section>
+        <section id="tutorial">
+            <div class="wrap">
+                <h2>Watch the full tutorial</h2>
+                <p class="sub">Every WayPoint feature, step by step, on Android. Use the chapters to jump to the part you need.</p>
+                <div class="video">
+                    <iframe src="https://www.youtube-nocookie.com/embed/EKToYmhgwzE?rel=0" title="WayPoint for Android – Full Tutorial" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section class="alt">
             <div class="wrap">
                 <h2>Free to start. Pro when you need more.</h2>
                 <p class="sub">WayPoint Basic is free. WayPoint Pro is an optional upgrade, purchased through the App Store or Google Play.</p>
@@ -183,7 +196,7 @@
             </div>
         </section>
 
-        <section id="about" class="alt">
+        <section id="about">
             <div class="wrap about">
                 <div>
                     <h2>About SpcJenn LLC</h2>
