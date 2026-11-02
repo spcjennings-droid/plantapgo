@@ -85,6 +85,10 @@
         .pro { border: 2px solid var(--amber); }
         .video { position: relative; width: 100%; max-width: 860px; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.45); background: #151824; }
         .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+        .videos { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+        .videos .video { max-width: none; }
+        .video-label { color: var(--amber); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; font-size: 13px; margin-bottom: 10px; }
+        @media (max-width: 760px) { .videos { grid-template-columns: 1fr; } }
         .about { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 32px; align-items: start; }
         .about p { color: var(--muted); margin-bottom: 14px; }
         .contact-card p { color: var(--text); margin-bottom: 8px; font-size: 15px; }
@@ -178,10 +182,28 @@
         <section id="tutorial">
             <div class="wrap">
                 <h2>Watch the full tutorial</h2>
-                <p class="sub">Every WayPoint feature, step by step, on Android. Use the chapters to jump to the part you need.</p>
-                <div class="video">
-                    <iframe src="https://www.youtube-nocookie.com/embed/EKToYmhgwzE?rel=0" title="WayPoint for Android – Full Tutorial" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <p class="sub">Every WayPoint feature, step by step. Pick your phone, then use the chapters to jump to the part you need.</p>
+                <div class="videos" id="tutorialVideos">
+                    <div class="video-item" id="tutorial-iphone">
+                        <p class="video-label">iPhone</p>
+                        <div class="video">
+                            <iframe src="https://www.youtube-nocookie.com/embed/VMVKC4r2urg?rel=0" title="WayPoint for iPhone – Full Tutorial" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="video-item" id="tutorial-android">
+                        <p class="video-label">Android</p>
+                        <div class="video">
+                            <iframe src="https://www.youtube-nocookie.com/embed/EKToYmhgwzE?rel=0" title="WayPoint for Android – Full Tutorial" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                    </div>
                 </div>
+                <script>
+                    // On an Android phone, show the Android video first.
+                    if (/Android/i.test(navigator.userAgent)) {
+                        var v = document.getElementById('tutorialVideos');
+                        v.insertBefore(document.getElementById('tutorial-android'), v.firstChild);
+                    }
+                </script>
             </div>
         </section>
 
